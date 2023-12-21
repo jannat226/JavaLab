@@ -1,0 +1,80 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Generic class for PodcastContainer
+class PodcastContainer<T extends Podcast> {
+    private List<T> podcasts;
+
+    public PodcastContainer() {
+        this.podcasts = new ArrayList<>();
+    }
+
+    public void addPodcast(T podcast) {
+        podcasts.add(podcast);
+    }
+
+    public List<T> getPodcasts() {
+        return podcasts;
+    }
+}
+
+// Generic interface for PodcastService
+interface PodcastService<T extends Podcast> {
+    void uploadPodcast(T podcast);
+
+    void removePodcast(T podcast);
+
+    void recommendPodcasts();
+}
+
+// Generic utility class with a generic method
+class PodcastUtil {
+
+    public static <T extends Podcast> T findPodcastById(PodcastContainer<T> podcastContainer, String podcastId) {
+        for (T podcast : podcastContainer.getPodcasts()) {
+            if (podcastId.equals(getPodcastId(podcast))) {
+                return podcast;
+            }
+        }
+        return null;
+    }
+
+    private static <T extends Podcast> String getPodcastId(T podcast) {
+        return podcast.getId();
+    }
+}
+
+// Podcast class
+class Podcast {
+    private String id;
+    private String title;
+    private String host;
+
+    // Constructor, getters, and setters...
+
+    public String getId() {
+        return id;
+    }
+}
+
+// Specific Podcast subclass
+class TechPodcast extends Podcast {
+
+    public TechPodcast(String string, String string2, String string3) {
+
+    }
+    // Additional properties or methods specific to TechPodcast
+}
+
+// Main class for demonstration
+public class PodcastApp {
+    public static void main(String[] args) {
+        // Create a PodcastContainer for Tech Podcasts
+        PodcastContainer<TechPodcast> techPodcastContainer = new PodcastContainer<>();
+        techPodcastContainer.addPodcast(new TechPodcast("TP001", "Tech Talk", "John Doe"));
+
+        // Find a specific tech podcast by ID
+        TechPodcast foundTechPodcast = PodcastUtil.findPodcastById(techPodcastContainer, "TP001");
+        System.out.println("Found Tech Podcast: " + foundTechPodcast);
+    }
+}
